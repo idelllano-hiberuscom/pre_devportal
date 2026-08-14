@@ -19,7 +19,7 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  gap: var(--space-3);
 }
 
 .cards > ul > li {
@@ -28,7 +28,7 @@
 }
 
 .cards .cards-card-body {
-  margin: 16px;
+  margin: var(--space-2);
 }
 
 .cards .cards-card-alt,
@@ -56,12 +56,12 @@
 
 /* editorial variant */
 .cards.editorial {
-  padding: 56px 24px;
+  padding: var(--space-7) var(--space-3);
 }
 
 .cards.editorial > ul {
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: var(--space-3);
 }
 
 .cards.editorial > ul > li {
@@ -73,7 +73,7 @@
   position: absolute;
   inset: auto 0 0;
   margin: 0;
-  padding: 24px 32px;
+  padding: var(--space-3) var(--space-4);
   color: var(--background-color);
 }
 
@@ -81,33 +81,33 @@
    declararlo en los tres: la regla global de titulares fija --text-color y gana a la
    herencia del contenedor. */
 .cards.editorial .cards-card-body h5 {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-1);
   color: var(--background-color);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 20px;
 }
 
 .cards.editorial .cards-card-body h2,
 .cards.editorial .cards-card-body h3 {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-1);
   color: var(--background-color);
 }
 
 .cards.editorial .cards-card-body h2 {
-  font-size: 32px;
+  font-size: var(--heading-font-size-xl);
   line-height: 44px;
 }
 
 .cards.editorial .cards-card-body h3 {
-  font-size: 24px;
+  font-size: var(--heading-font-size-l);
   line-height: 34px;
-  letter-spacing: 0.25px;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 /* icon-cards variant */
 .cards.icon-cards > ul {
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: var(--space-3);
 }
 
 .cards.icon-cards > ul > li {
@@ -115,7 +115,7 @@
   background-color: transparent;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-2);
 }
 
 .cards.icon-cards .cards-card-image {
@@ -150,23 +150,23 @@
 .cards.icon-cards .cards-card-body h2,
 .cards.icon-cards .cards-card-body h3,
 .cards.icon-cards .cards-card-body h4 {
-  margin: 0 0 8px;
-  font-size: 18px;
-  font-weight: 500;
+  margin: 0 0 var(--space-1);
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-medium);
   line-height: 22px;
-  letter-spacing: 0.25px;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .cards.icon-cards .cards-card-body p {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 32px;
 }
 
 .cards.logos > ul {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--space-2);
   justify-items: center;
 }
 
@@ -183,7 +183,7 @@
   min-height: 96px;
   border: 0;
   border-radius: 50%;
-  padding: 16px;
+  padding: var(--space-2);
   box-shadow: var(--shadow-card);
   aspect-ratio: 1;
 }
@@ -205,11 +205,11 @@
 @media (width >= 600px) {
   .cards.icon-cards > ul {
     grid-template-columns: repeat(2, 1fr);
-    gap: 48px 24px;
+    gap: var(--space-6) var(--space-3);
   }
 
   .cards.logos > ul {
-    gap: 24px;
+    gap: var(--space-3);
   }
 
   .cards.logos > ul > li {
@@ -232,7 +232,7 @@
      2x2 ocupando la mitad del ancho junto a una imagen. No son 4 en fila. */
   .cards.icon-cards > ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 48px 24px;
+    gap: var(--space-6) var(--space-3);
   }
 
   /*
@@ -244,7 +244,7 @@
   .section.cards-section-split {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: 32px;
+    column-gap: var(--space-4);
     align-items: center;
     max-width: none;
     margin-inline: 0;
@@ -263,18 +263,18 @@
 
   .cards.editorial .cards-card-body h2 {
     font-size: 40px;
-    line-height: 60px;
+    line-height: var(--line-height-display);
   }
 
   .cards.logos > ul {
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 48px;
+    gap: var(--space-6);
   }
 }
 
 @media (width >= 1200px) {
   .cards.editorial {
-    padding: 96px 100px 56px;
+    padding: var(--space-12) 100px var(--space-7);
   }
 }
 
@@ -285,7 +285,7 @@
  */
 .cards.icon-grid > ul {
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: var(--space-5);
 }
 
 .cards.icon-grid > ul > li {
@@ -298,7 +298,7 @@
 .cards.icon-grid .cards-card-image {
   display: flex;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-3);
   line-height: 0;
 }
 
@@ -315,38 +315,108 @@
 }
 
 .cards.icon-grid > ul > li > .cards-card-body :is(h2, h3, h4) {
-  margin: 0 0 8px;
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 0.25px;
+  margin: 0 0 var(--space-1);
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-tight);
   line-height: 22px;
 }
 
 .cards.icon-grid > ul > li > .cards-card-body p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   line-height: var(--paragraph-line-height);
 }
 
 @media (width >= 600px) {
   .cards.icon-grid > ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 40px 24px;
+    gap: var(--space-5) var(--space-3);
   }
 }
 
 @media (width >= 900px) {
   .cards.icon-grid > ul {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 48px 24px;
+    gap: var(--space-6) var(--space-3);
+  }
+}
+
+/*
+ * Variante boxed: las tarjetas blancas que se solapan con el hero en las páginas de
+ * integración (el portal las llama icon-card, dentro de hero-with-cards).
+ * Medido en /integraciones/hosted-checkout:
+ *   tarjeta 348x320 · fondo blanco · radio 16 · sombra de la casa · padding 32
+ *   rejilla de 2 columnas de 348 con gap 24, centrada (720 en total)
+ *   icono 56x56 en teal con 16px por debajo
+ *   h4 18/22 peso 500 ls .25 · p 16/32 sobre rgb(118,118,122)
+ */
+.cards.boxed > ul {
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.cards.boxed > ul > li {
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  border-radius: 16px;
+  padding: var(--space-4);
+  background-color: var(--background-color);
+  box-shadow: var(--shadow-card);
+}
+
+.cards.boxed .cards-card-image {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-2);
+  line-height: 0;
+}
+
+.cards.boxed .cards-card-image img,
+.cards.boxed .cards-card-image svg {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  aspect-ratio: auto;
+}
+
+.cards.boxed > ul > li > .cards-card-body {
+  margin: 0;
+}
+
+.cards.boxed > ul > li > .cards-card-body :is(h2, h3, h4) {
+  margin: 0 0 var(--space-1);
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: 22px;
+}
+
+.cards.boxed > ul > li > .cards-card-body p {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--body-font-size-m);
+  line-height: var(--paragraph-line-height);
+}
+
+.cards.boxed > ul > li > .cards-card-body p:last-child {
+  margin-bottom: 0;
+}
+
+@media (width >= 900px) {
+  .cards.boxed > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 /* plugins variant */
 .cards.plugins > ul {
   grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  gap: var(--space-3);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -364,14 +434,14 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 280px;
-  padding: 24px;
+  padding: var(--space-3);
   color: var(--brand-accent);
   background-color: var(--background-color);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
   text-decoration: none;
   font-family: inherit;
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 32px;
   transition: box-shadow 0.2s ease;
 }
@@ -410,7 +480,7 @@
 /* El portal mide 16px/32px dentro de la tarjeta de plugin. */
 .cards.plugins > ul > li > a > .cards-card-body:not(:empty) p {
   margin: 0;
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   line-height: var(--paragraph-line-height);
 }
 

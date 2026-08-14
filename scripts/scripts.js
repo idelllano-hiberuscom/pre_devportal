@@ -55,9 +55,36 @@ export function moveInstrumentation(from, to) {
  * @param {string} path site-root-relative path, e.g. "/nav"
  * @returns {string} the path resolved for the current host
  */
+/*
+ * Idiomas del sitio. El español vive en la raíz sin prefijo, igual que en el portal de
+ * origen, y los demás cuelgan de `/<código>/`. Los slugs no se traducen: `/en/inicio`,
+ * no `/en/home`, también como el original.
+ */
+export const LANGS = ['en', 'gl'];
+export const LANG_DEFAULT = 'es';
+
+/** Código de idioma de la página actual, a partir de su ruta. */
+export function currentLang() {
+  const segments = window.location.pathname.split('/');
+  // En Universal Editor la ruta es /content/<site>/[<lang>/]…; en entrega, /[<lang>/]…
+  const candidato = segments[1] === 'content' && segments[2] ? segments[3] : segments[1];
+  return LANGS.includes(candidato) ? candidato : LANG_DEFAULT;
+}
+
+/**
+ * Resuelve una ruta de fragmento (nav, footer) bajo la raíz del sitio Y del idioma.
+ *
+ * Sin la parte del idioma, una página en `/en/inicio` cargaría el nav español: los
+ * fragmentos son páginas como cualquier otra y cada idioma tiene los suyos.
+ */
 export function rootPath(path) {
-  const [, content, site] = window.location.pathname.split('/');
-  return content === 'content' && site ? `/content/${site}${path}` : path;
+  const segments = window.location.pathname.split('/');
+  const [, content, site] = segments;
+  const lang = currentLang();
+  const prefijo = lang === LANG_DEFAULT ? '' : `/${lang}`;
+  return content === 'content' && site
+    ? `/content/${site}${prefijo}${path}`
+    : `${prefijo}${path}`;
 }
 
 /**
@@ -142,7 +169,9 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  // Venía fijado a 'en' desde el boilerplate: el sitio entero declaraba inglés mientras
+  // servía español. Ahora sale de la ruta, que es la única fuente fiable del idioma.
+  document.documentElement.lang = currentLang();
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {

@@ -7,13 +7,13 @@
  */
 
 .pie-chart {
-  margin: 40px 0 80px;
+  margin: var(--space-5) 0 var(--space-10);
 }
 
 .pie-chart .pie-chart-visual {
   display: flex;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-5);
 }
 
 .pie-chart .pie-chart-donut {
@@ -32,7 +32,7 @@
 .pie-chart .pie-chart-items {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: var(--space-4);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -45,7 +45,7 @@
 .pie-chart .pie-chart-item-icon {
   display: flex;
   align-items: center;
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-1);
 }
 
 .pie-chart .pie-chart-item-icon img {
@@ -55,15 +55,15 @@
 }
 
 .pie-chart .pie-chart-item-title {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-1);
   border-bottom: 1px solid var(--brand-accent);
-  padding-bottom: 8px;
+  padding-bottom: var(--space-1);
   color: var(--text-color);
 }
 
 .pie-chart .pie-chart-item-details {
   color: var(--text-secondary);
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   line-height: var(--paragraph-line-height);
 }
 
@@ -108,8 +108,8 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) clamp(260px, 36%, 480px) minmax(0, 1fr);
     align-items: center;
-    gap: 32px 48px;
-    margin: 80px 0 192px;
+    gap: var(--space-4) var(--space-6);
+    margin: var(--space-10) 0 192px;
   }
 
   .pie-chart .pie-chart-visual {

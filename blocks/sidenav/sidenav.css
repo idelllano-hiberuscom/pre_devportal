@@ -16,11 +16,11 @@
 .sidenav .sidenav-search {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 0 8px;
+  gap: var(--space-1);
+  margin: 0 0 var(--space-1);
   border: 1px solid var(--brand-accent);
   border-radius: var(--radius-pill);
-  padding: 8px 16px;
+  padding: var(--space-1) var(--space-2);
 }
 
 .sidenav .sidenav-search-icon {
@@ -72,12 +72,12 @@
 .sidenav .sidenav-toggle {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
   min-height: 40px;
-  padding: 8px 24px;
+  padding: var(--space-1) var(--space-3);
   color: #201f1f;
   font-size: var(--body-font-size-xs);
-  letter-spacing: 0.25px;
+  letter-spacing: var(--letter-spacing-tight);
   line-height: var(--body-line-height);
   text-decoration: none;
 }
@@ -90,9 +90,9 @@
 /* Encabezado de grupo de primer nivel: peso 500 y filete inferior, sangrado 24px. */
 .sidenav .sidenav-group-title {
   border-bottom: 1px solid var(--border-color);
-  margin: 0 24px;
-  padding: 8px 0;
-  font-weight: 500;
+  margin: 0 var(--space-3);
+  padding: var(--space-1) 0;
+  font-weight: var(--font-weight-medium);
 }
 
 .sidenav .sidenav-group-title a:any-link {
@@ -134,7 +134,7 @@
 }
 
 .sidenav .sidenav-list-3 .sidenav-link {
-  padding-left: 40px;
+  padding-left: var(--space-5);
 }
 
 .sidenav .sidenav-link:hover,
@@ -147,7 +147,7 @@
 .sidenav .sidenav-link.is-current,
 .sidenav a.sidenav-link.is-current:any-link {
   color: var(--brand-accent);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   letter-spacing: 0.1px;
 }
 
@@ -178,21 +178,51 @@
     width: 100%;
   }
 
+  /*
+   * La columna del menú se estira a todo el alto de la rejilla. Hace falta decirlo a mano
+   * porque el `align-items: start` de arriba la encogía al alto de su contenido, y entonces
+   * el panel sticky no tenía recorrido: al bajar se iba con el resto de la página.
+   */
   main.has-sidenav > .section.sidenav-section {
     grid-row: 1 / -1;
     grid-column: 1;
+    align-self: stretch;
     margin: 0;
     border-right: 1px solid var(--border-color);
     padding: 0;
   }
 
+  /*
+   * El alto tiene que bajar por toda la cadena — sección, envoltorio y bloque — hasta el
+   * panel: el bloque contenedor de un sticky es su padre, así que si el bloque mide solo lo
+   * que mide el panel, no hay recorrido y el menú se va con la página al bajar.
+   */
+  main.has-sidenav > .section.sidenav-section > div,
+  main.has-sidenav > .section.sidenav-section .sidenav {
+    height: 100%;
+  }
+
+  /*
+   * El menú queda anclado bajo la cabecera, igual que en el portal. Va `fixed` y no `sticky`
+   * porque tiene que seguir a la vista también sobre el pie: con `sticky` solo se pega
+   * mientras `main` está en pantalla y al llegar abajo del todo se iba con él.
+   *
+   * La columna de 250px de la rejilla sigue reservando el hueco, así que sacarlo del flujo no
+   * desplaza el contenido. La altura se limita al hueco que deja la cabecera y el panel se
+   * desplaza solo: si no, con todos los grupos abiertos el final del menú era inalcanzable.
+   */
   .sidenav-section .sidenav-panel {
-    position: sticky;
+    position: fixed;
     top: var(--nav-height);
-    padding: 32px 0;
+    left: 0;
+    width: 250px;
+    max-height: calc(100dvh - var(--nav-height));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-4) 0;
   }
 
   .sidenav-section .sidenav-search {
-    margin: 0 24px 8px;
+    margin: 0 var(--space-3) var(--space-1);
   }
 }

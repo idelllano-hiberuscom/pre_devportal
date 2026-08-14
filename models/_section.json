@@ -33,6 +33,10 @@
             {
               "name": "Highlight",
               "value": "highlight"
+            },
+            {
+              "name": "Banner azul",
+              "value": "banner"
             }
           ]
         }
@@ -65,7 +69,10 @@
         "swagger-console",
         "feature-list",
         "sidenav",
-        "cards-icon-grid"
+        "cards-icon-grid",
+        "cards-boxed",
+        "columns-divided",
+        "table"
       ]
     }
   ]

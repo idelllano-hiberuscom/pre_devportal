@@ -40,6 +40,19 @@ const PHOTOS = [
   // Póster del vídeo de /inicio. En 4:3, que es la proporción del vídeo del portal
   // (<video width="640" height="480">) y la que reproduce el bloque.
   ['video-poster', 960, 720, ['#01293c', '#1a7f96']],
+  ['hero-hosted', 1600, 900, ['#02303f', '#227e93']],
+  ['hosted-paso-1', 350, 525, ['#012b3f', '#1b7288']],
+  ['hosted-paso-2', 554, 350, ['#023348', '#2f8799']],
+  ['hosted-paso-3', 350, 450, ['#01243a', '#14708a']],
+  // Heros de las páginas de detalle del menú "Pagos online".
+  ['hero-sdk', 1600, 900, ['#012c40', '#1e7a90']],
+  ['hero-iframe', 1600, 900, ['#02364c', '#2b8ba0']],
+  ['hero-api', 1600, 900, ['#011f30', '#166f88']],
+  ['hero-pagos-moto', 1600, 900, ['#023246', '#2a8095']],
+  ['hero-pago-por-email', 1600, 900, ['#012738', '#1b7c93']],
+  ['hero-google-pay', 1600, 900, ['#023b53', '#3a94a8']],
+  ['hero-apple-pay', 1600, 900, ['#01222e', '#14657c']],
+  ['hero-bizum', 1600, 900, ['#022e44', '#25849b']],
 ];
 
 // Iconos de línea, estilo lucide, en teal de marca.
@@ -58,6 +71,10 @@ const ICONS = {
   'icon-history': 'M4 9V4m0 5h5M4.5 9a8 8 0 1 1 1.2 8M12 8v4.5l3.5 2',
   'icon-ruler': 'M3 15 15 3l6 6L9 21l-6-6Zm4-1 1.5 1.5M10 11l1.5 1.5M13 8l1.5 1.5',
   'icon-clock': 'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm0 3.5V12l3 2',
+  'icon-user-check': 'M10 4a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM3.5 20c0-3 2.9-5 6.5-5 1.3 0 2.5.26 3.5.72M15 17.5l2 2 4-4',
+  'icon-code': 'M9 7 4 12l5 5M15 7l5 5-5 5',
+  'icon-check-double': 'm3 12.5 4 4 7.5-9M11 16.5l1.5 1.5 8-9',
+  'icon-card': 'M3 7h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7Zm0 3.5h18',
 };
 
 // Logotipos de plataforma y de método de pago, tipográficos.
@@ -89,6 +106,52 @@ const CERT_LOGOS = [
   ['cert-visa', 'VISA', 200, 64],
   ['cert-mastercard', 'MC', 200, 64],
   ['cert-amex', 'AMEX', 200, 64],
+];
+
+/*
+ * Diagrama de secuencia de la integración Hosted, el que el portal muestra dentro de la
+ * franja azul. Se dibuja en blanco sobre transparente porque va sobre el navy de la sección.
+ */
+const DIAGRAMS = [
+  ['sdk-diagrama', 1090, 631, {
+    actores: ['Cliente', 'App / SDK', 'Cecabank'],
+    pasos: [
+      [0, 1, 'Inicia el pago en la app'],
+      [1, 2, 'El SDK envía los datos de pago'],
+      [2, 1, 'Resultado de la operación'],
+      [1, 0, 'La app muestra el resultado'],
+    ],
+  }],
+  ['iframe-diagrama', 1090, 631, {
+    actores: ['Cliente', 'Comercio', 'Cecabank'],
+    pasos: [
+      [0, 1, 'Inicia el pago'],
+      [1, 2, 'Solicita el formulario'],
+      [2, 1, 'Devuelve el iframe embebible'],
+      [1, 0, 'Muestra el iframe'],
+      [0, 2, 'Introduce los datos en el iframe'],
+      [2, 1, 'Notifica el resultado'],
+    ],
+  }],
+  ['api-diagrama', 1090, 631, {
+    actores: ['Cliente', 'Comercio', 'Cecabank'],
+    pasos: [
+      [0, 1, 'Inicia el pago'],
+      [1, 2, 'Envía los datos del pago'],
+      [2, 1, 'Responde con el resultado'],
+      [1, 0, 'Muestra el resultado'],
+    ],
+  }],
+  ['hosted-diagrama', 1090, 631, {
+    actores: ['Cliente', 'Comercio', 'Cecabank'],
+    pasos: [
+      [0, 1, 'Inicia pago'],
+      [1, 0, 'Redirecciona al formulario de pago'],
+      [0, 2, 'Introduce datos y confirma'],
+      [2, 1, 'Notificación de resultado'],
+      [1, 0, 'Redirecciona a la URL de retorno'],
+    ],
+  }],
 ];
 
 const browser = await chromium.launch();
@@ -172,6 +235,54 @@ for (const [name, label, w, h] of WORDMARKS) {
 }
 for (const [name, label, w, h] of CERT_LOGOS) {
   await shoot(name, 'png', w, h, LOGO_DRAW, { label, ink: '#ffffff', rule: 'rgba(255,255,255,0.55)' });
+}
+
+const DIAGRAM_DRAW = `
+  ctx.clearRect(0, 0, w, h);
+  const cols = a.actores.length;
+  const paso = w / (cols + 1);
+  const xs = a.actores.map((_, i) => paso * (i + 1));
+  const yTop = 118;
+  const yBase = h - 40;
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+  ctx.fillStyle = '#ffffff';
+  ctx.lineWidth = 2;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // cabecera: un círculo por actor con su nombre debajo
+  a.actores.forEach((nombre, i) => {
+    ctx.beginPath(); ctx.arc(xs[i], 46, 30, 0, Math.PI * 2); ctx.stroke();
+    ctx.font = '500 22px Helvetica, Arial, sans-serif';
+    ctx.fillText(nombre, xs[i], yTop - 22);
+    // línea de vida
+    ctx.save();
+    ctx.setLineDash([6, 8]);
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.beginPath(); ctx.moveTo(xs[i], yTop); ctx.lineTo(xs[i], yBase); ctx.stroke();
+    ctx.restore();
+  });
+
+  // mensajes entre actores, con punta de flecha
+  const salto = (yBase - yTop - 40) / a.pasos.length;
+  a.pasos.forEach(([de, para, etiqueta], i) => {
+    const y = yTop + 40 + salto * i;
+    const x1 = xs[de];
+    const x2 = xs[para];
+    const dir = Math.sign(x2 - x1);
+    ctx.strokeStyle = 'rgba(255,255,255,0.75)';
+    ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2, y); ctx.lineTo(x2 - 12 * dir, y - 6); ctx.lineTo(x2 - 12 * dir, y + 6);
+    ctx.closePath(); ctx.fill();
+    ctx.font = '400 17px Helvetica, Arial, sans-serif';
+    ctx.fillText(etiqueta, (x1 + x2) / 2, y - 16);
+  });
+`;
+
+for (const [name, w, h, args] of DIAGRAMS) {
+  await shoot(name, 'png', w, h, DIAGRAM_DRAW, args);
 }
 
 await browser.close();

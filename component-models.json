@@ -136,6 +136,10 @@
           {
             "name": "Highlight",
             "value": "highlight"
+          },
+          {
+            "name": "Banner azul",
+            "value": "banner"
           }
         ]
       }
@@ -369,11 +373,12 @@
         ]
       },
       {
-        "component": "text",
+        "component": "richtext",
         "name": "code",
         "label": "Code",
         "valueType": "string",
-        "required": true
+        "required": true,
+        "description": "El código va como richtext, no como texto plano: la entrega colapsa los saltos de línea de un campo de texto y un ejemplo de varias líneas acabaría en una sola."
       }
     ]
   },
@@ -645,6 +650,25 @@
         "label": "OpenAPI Endpoint",
         "description": "OpenAPI or Swagger endpoint loaded after a successful authentication.",
         "required": false
+      }
+    ]
+  },
+  {
+    "id": "table",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "caption",
+        "label": "Rótulo",
+        "description": "Descripción breve de la tabla. Se usa como caption y como nombre accesible del área desplazable."
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "content",
+        "label": "Tabla",
+        "description": "La tabla va aquí y no en un componente de texto: el componente de texto sanea el richtext al guardarlo y elimina la tabla, dejando solo párrafos."
       }
     ]
   },

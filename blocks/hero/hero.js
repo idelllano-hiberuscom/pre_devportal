@@ -9,6 +9,24 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
  *   texto centrado en blanco · h1 64px/600/80px · margin inferior 80px
  */
 
+/*
+ * Las páginas de integración ponen bajo el hero una rejilla de tarjetas blancas que se solapa
+ * con la fotografía. En el portal es un único componente, `hero-with-cards`; aquí se compone
+ * en la sección, porque en EDS un bloque no puede contener otro (decorateBlocks solo recorre
+ * `div.section > div > div`).
+ *
+ * El hero solo marca la sección: el solapamiento y el ancho de la rejilla los pone el CSS.
+ */
+function markSectionWithCards(block) {
+  const section = block.closest('.section');
+  if (!section) return;
+
+  const cards = [...section.children]
+    .find((child) => child !== block.parentElement && child.querySelector(':scope > .cards'));
+
+  if (cards) section.classList.add('hero-with-cards');
+}
+
 /**
  * loads and decorates the hero block
  * @param {Element} block The block element
@@ -82,4 +100,6 @@ export default function decorate(block) {
   rows.forEach((row) => row.remove());
   block.append(media, content);
   if (altCell) block.append(altCell);
+
+  markSectionWithCards(block);
 }

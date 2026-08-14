@@ -30,7 +30,10 @@
       "swagger-console",
       "feature-list",
       "sidenav",
-      "cards-icon-grid"
+      "cards-icon-grid",
+      "cards-boxed",
+      "columns-divided",
+      "table"
     ]
   },
   {
@@ -76,6 +79,12 @@
     ]
   },
   {
+    "id": "cards-boxed",
+    "components": [
+      "card-icon"
+    ]
+  },
+  {
     "id": "carousel",
     "components": [
       "carousel-item"
@@ -100,6 +109,12 @@
       "cards-icon-cards",
       "cards-plugins",
       "cards-icon-grid"
+    ]
+  },
+  {
+    "id": "columns-divided",
+    "components": [
+      "column"
     ]
   },
   {

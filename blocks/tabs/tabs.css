@@ -2,16 +2,16 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 24px;
+  gap: var(--space-3);
   list-style: none;
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-2);
   padding: 0;
 }
 
 @media (width >= 900px) {
   .tabs .tabs-list {
-    gap: 40px;
-    margin: 128px 0 16px;
+    gap: var(--space-5);
+    margin: 128px 0 var(--space-2);
   }
 }
 
@@ -30,8 +30,8 @@
   color: var(--brand-accent);
   font-family: var(--heading-font-family);
   font-size: var(--heading-font-size-l);
-  font-weight: 500;
-  letter-spacing: 0.25px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-tight);
   line-height: 34px;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
@@ -52,13 +52,13 @@
 }
 
 .tabs [role="tabpanel"] {
-  padding: 16px 0;
+  padding: var(--space-2) 0;
 }
 
 /* Contenido escrito directamente en la pestaña, sin fragmento. */
 .tabs .tabs-panel-content {
   color: var(--text-secondary);
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   line-height: var(--paragraph-line-height);
 }
 
@@ -75,6 +75,6 @@
 }
 
 .tabs .tabs-error {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-1);
   color: #b3261e;
 }

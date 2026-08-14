@@ -15,8 +15,8 @@
   align-items: center;
   justify-content: center;
   min-height: 360px;
-  margin-bottom: 40px;
-  padding: 64px 24px;
+  margin-bottom: var(--space-5);
+  padding: var(--space-8) var(--space-3);
   isolation: isolate;
   text-align: center;
 }
@@ -62,14 +62,14 @@
 }
 
 .hero .hero-content :is(h1, h2, h3, h4, h5, h6) {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-2);
   color: var(--background-color);
 }
 
 .hero .hero-content p {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-2);
   color: var(--background-color);
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   line-height: var(--paragraph-line-height);
 }
 
@@ -94,14 +94,40 @@
   white-space: nowrap;
 }
 
+/*
+ * Composición hero + tarjetas (el `hero-with-cards` del portal).
+ * Medido en /integraciones/hosted-checkout:
+ *   la fotografía llega hasta 193px por debajo del área de texto del hero
+ *   la rejilla arranca justo al acabar el texto, es decir solapada sobre esos 193px
+ *   rejilla de 2 columnas de 348 con gap 24: 720px en total, centrada
+ * En móvil el solape se reduce, porque las tarjetas van en una sola columna.
+ */
+.section.hero-with-cards .hero {
+  margin-bottom: 0;
+  padding-bottom: 104px;
+}
+
+.section.hero-with-cards .cards-wrapper {
+  position: relative;
+  margin-top: -40px;
+}
+
 @media (width >= 900px) {
   .hero {
     min-height: 520px;
-    margin-bottom: 80px;
-    padding: 96px 32px;
+    margin-bottom: var(--space-10);
+    padding: var(--space-12) var(--space-4);
   }
 
   .hero .hero-content :is(h1) {
     line-height: 80px;
+  }
+
+  .section.hero-with-cards .hero {
+    padding-bottom: 289px;
+  }
+
+  .section.hero-with-cards .cards-wrapper {
+    margin-top: -193px;
   }
 }

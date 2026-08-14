@@ -7,14 +7,14 @@
 
 .accordion-intro h2,
 .accordion-intro.default-content-wrapper h2 {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-1);
   text-align: center;
 }
 
 .accordion {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-2);
   max-width: 940px;
   margin: 0 auto;
 }
@@ -34,11 +34,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 24px 16px;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-2);
   color: var(--text-color);
-  font-size: var(--body-font-size-s);
-  font-weight: 400;
+  font-size: var(--body-font-size-m);
+  font-weight: var(--font-weight-regular);
   line-height: var(--body-line-height);
   list-style: none;
   cursor: pointer;
@@ -79,9 +79,9 @@
 }
 
 .accordion .accordion-item-body {
-  padding: 0 16px 24px;
+  padding: 0 var(--space-2) var(--space-3);
   color: var(--text-secondary);
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   line-height: var(--paragraph-line-height);
 }
 
@@ -95,6 +95,6 @@
 
 @media (width >= 900px) {
   .accordion {
-    gap: 24px;
+    gap: var(--space-3);
   }
 }

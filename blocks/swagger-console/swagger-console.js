@@ -3,14 +3,6 @@ import {
   toClassName,
 } from '../../scripts/aem.js';
 
-const ORDERED_FIELDS = [
-  'backgroundImage',
-  'recoveryLink',
-  'registerLink',
-  'authEndpoint',
-  'openApiEndpoint',
-];
-
 const FIELD_ALIASES = {
   'background-image': 'backgroundImage',
   backgroundimage: 'backgroundImage',
@@ -57,13 +49,31 @@ const extractCellValue = (cell, fieldName) => {
   return cell.textContent.trim();
 };
 
+/*
+ * AEM omite la fila de todo campo que el autor deje vacío, así que `ORDERED_FIELDS[index]`
+ * desplaza los cinco campos en cuanto falta uno: la consola acaba pidiendo el OpenAPI a la
+ * URL de autenticación. Cuando no hay etiquetas se resuelve por contenido, que aquí es
+ * suficiente porque los tres tipos de campo son distinguibles: la imagen trae <img>, los
+ * enlaces traen <a>, y los endpoints son URLs sueltas en el orden del modelo.
+ */
+const inferirCampos = (rows) => {
+  const restantes = ['recoveryLink', 'registerLink', 'authEndpoint', 'openApiEndpoint'];
+  return rows.map((row) => {
+    const celda = row.children[0] || row;
+    if (celda.querySelector('img, picture')) return 'backgroundImage';
+    const i = celda.querySelector('a') ? 0 : restantes.findIndex((f) => f.endsWith('Endpoint'));
+    return i >= 0 ? restantes.splice(i, 1)[0] : '';
+  });
+};
+
 const getEntries = (block) => {
   const rows = [...block.querySelectorAll(':scope > div')];
-  const hasLabels = rows.every((row) => row.children.length > 1);
+  const hasLabels = rows.length > 0 && rows.every((row) => row.children.length > 1);
+  const inferidos = hasLabels ? null : inferirCampos(rows);
   const entries = rows.reduce((result, row, index) => {
     const fieldName = hasLabels
       ? normalizeFieldName(row.children[0]?.textContent || '')
-      : ORDERED_FIELDS[index];
+      : inferidos[index];
     if (!fieldName) return result;
 
     const cell = getCell(row);

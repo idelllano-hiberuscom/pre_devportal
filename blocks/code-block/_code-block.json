@@ -60,11 +60,12 @@
           ]
         },
         {
-          "component": "text",
+          "component": "richtext",
           "name": "code",
           "label": "Code",
           "valueType": "string",
-          "required": true
+          "required": true,
+          "description": "El código va como richtext, no como texto plano: la entrega colapsa los saltos de línea de un campo de texto y un ejemplo de varias líneas acabaría en una sola."
         }
       ]
     }

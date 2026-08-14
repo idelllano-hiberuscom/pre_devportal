@@ -156,10 +156,15 @@ function splitSectionWithImage(block) {
 
 export default function decorate(block) {
   const isLogoVariant = block.classList.contains('logos');
-  // icon-grid es la rejilla de tres columnas de /inicio: mismo item que icon-cards, otra
-  // disposicion, asi que comparten la decoracion.
+  /*
+   * icon-grid es la rejilla de tres columnas de /inicio y boxed son las tarjetas blancas que
+   * se solapan con el hero en las páginas de integración. Las tres variantes comparten el
+   * mismo item (icono + titular + texto), así que comparten también la decoración: solo
+   * cambia la disposición, que es cosa del CSS.
+   */
   const isIconCardsVariant = block.classList.contains('icon-cards')
-    || block.classList.contains('icon-grid');
+    || block.classList.contains('icon-grid')
+    || block.classList.contains('boxed');
   const isPluginsVariant = block.classList.contains('plugins');
   const isEditorialVariant = block.classList.contains('editorial');
   if (isIconCardsVariant) splitSectionWithImage(block);

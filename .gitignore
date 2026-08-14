@@ -14,3 +14,11 @@ helix-importer-ui
 .eds-ai/*
 .github/*
 config.json
+
+# Material extraído del portal de origen y su conversión para el DAM: ~19 MB de binarios
+# que se suben a AEM, no se sirven desde el repositorio. Se regeneran con
+# `extract-images.mjs` y `assets-reales.mjs`. El inventario sí se versiona: es la evidencia
+# de qué imagen usa cada página y de dónde salió cada sustitución.
+.eds-pipeline/portal-images/*
+!.eds-pipeline/portal-images/inventario.json
+.eds-pipeline/assets-reales/

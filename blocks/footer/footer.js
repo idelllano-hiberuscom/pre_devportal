@@ -75,12 +75,19 @@ export default async function decorate(block) {
   const content = document.createElement('div');
   content.className = 'footer-content';
 
-  // --- marca: la primera imagen suelta del contenido ---
-  const brandPicture = flat.querySelector('p > picture, picture');
+  /*
+   * Marca: todo lo que va antes del primer titular, es decir el logotipo y, debajo, los
+   * enlaces a redes. Antes se cogía solo la primera imagen, así que los enlaces a redes caían
+   * en el bloque de certificaciones en vez de quedarse bajo el logotipo.
+   */
   const brand = document.createElement('div');
   brand.className = 'footer-brand';
-  if (brandPicture) {
-    brand.append(brandPicture.closest('p') || brandPicture);
+  while (flat.firstElementChild && !isHeading(flat.firstElementChild)) {
+    const child = flat.firstElementChild;
+    if (child.querySelector('a') && !child.querySelector('picture, img')) {
+      child.classList.add('footer-social');
+    }
+    brand.append(child);
   }
 
   const links = document.createElement('div');

@@ -294,18 +294,53 @@ function buildCodeLines(codeText, language) {
   return list;
 }
 
+/*
+ * El código llega como richtext y no como texto plano por una razón concreta: la entrega
+ * colapsa los saltos de línea de un campo de texto, y un curl de quince líneas acababa en
+ * una sola. En richtext cada línea viaja como su propio elemento (o dentro de un <pre>), y
+ * de ahí se reconstruye el original.
+ */
+function readCode(cell) {
+  const pre = cell.querySelector('pre');
+  if (pre) return pre.textContent;
+
+  const lines = [...cell.children].filter((child) => child.tagName !== 'BR');
+  if (lines.length > 1) return lines.map((line) => line.textContent).join('\n');
+
+  return cell.textContent;
+}
+
+/*
+ * Las filas tampoco se leen por posición: AEM omite la de cualquier campo vacío, así que un
+ * bloque sin rótulo desplazaba idioma y código. El código es la celda con <pre> o con varias
+ * líneas, el idioma la que coincide con un token conocido, y el rótulo lo que queda.
+ */
+function resolveCells(cells) {
+  const codeCell = cells.find((cell) => cell.querySelector('pre'))
+    || cells.find((cell) => cell.children.length > 1)
+    || cells[cells.length - 1];
+
+  const rest = cells.filter((cell) => cell !== codeCell);
+  const languageIndex = rest.findIndex((cell) => {
+    const token = cell.textContent.trim().toLowerCase();
+    return Boolean(LANGUAGE_LABELS[token] || LANGUAGE_ALIASES[token]);
+  });
+  const languageCell = languageIndex >= 0 ? rest.splice(languageIndex, 1)[0] : null;
+
+  return { titleCell: rest[0] || null, languageCell, codeCell };
+}
+
 export default function decorate(block) {
   const rows = [...block.children];
-  const [titleRow, languageRow, codeRow] = rows;
-  const titleCell = titleRow?.firstElementChild;
-  const languageCell = languageRow?.firstElementChild;
-  const codeCell = codeRow?.firstElementChild;
+  const { titleCell, languageCell, codeCell } = resolveCells(
+    rows.map((row) => row.firstElementChild || row).filter(Boolean),
+  );
 
-  if (!languageCell || !codeCell) return;
+  if (!codeCell) return;
 
   const title = titleCell?.textContent.trim() || '';
-  const language = normalizeLanguage(languageCell.textContent);
-  const codeText = normalizeCode(codeCell.textContent);
+  const language = normalizeLanguage(languageCell?.textContent || '');
+  const codeText = normalizeCode(readCode(codeCell));
 
   const content = document.createElement('div');
   content.className = 'code-block-content';
@@ -322,9 +357,11 @@ export default function decorate(block) {
 
   // El portal no muestra etiqueta de lenguaje: el campo se conserva oculto para que
   // Universal Editor siga pudiendo editarlo sin alterar el aspecto.
-  languageCell.className = 'code-block-language';
-  languageCell.textContent = formatLanguage(language);
-  languageCell.setAttribute('aria-hidden', 'true');
+  if (languageCell) {
+    languageCell.className = 'code-block-language';
+    languageCell.textContent = formatLanguage(language);
+    languageCell.setAttribute('aria-hidden', 'true');
+  }
 
   const actions = document.createElement('div');
   actions.className = 'code-block-actions';
@@ -361,7 +398,8 @@ export default function decorate(block) {
 
   pre.append(code);
   codeCell.append(pre);
-  content.append(header, codeCell, languageCell);
+  content.append(header, codeCell);
+  if (languageCell) content.append(languageCell);
 
   rows.forEach((row) => row.remove());
   block.append(content);

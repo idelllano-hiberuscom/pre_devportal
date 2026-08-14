@@ -185,4 +185,7 @@ export default function decorate(block) {
   // La sección del sidenav pasa a ser la columna izquierda de la página.
   block.closest('.section')?.classList.add('sidenav-section');
   block.closest('main')?.classList.add('has-sidenav');
+  // También en el body: el pie vive fuera de `main` y en el portal arranca donde acaba el
+  // menú, no a sangre, así que necesita saber que la página lleva menú lateral.
+  document.body.classList.add('has-sidenav');
 }

@@ -85,16 +85,32 @@ La admin API de aem.live no sirve aquí: `POST https://admin.hlx.page/preview/id
 responde **401 `error from content-bus`**, porque con AEM como origen el preview se replica
 desde el propio author, no desde el repositorio.
 
-Así que se hace desde AEM, y son dos clics:
+Se hace desde AEM. A mano son dos clics:
 
 1. Sites console → `/content/pre-devportal` → seleccionar las páginas (o la raíz con sus
    descendientes) → **Publicar** → publica a preview
 2. o abrir cualquier página en Universal Editor y usar su botón de preview
 
-Por API sería `POST /bin/replicate.json` con `path`, `cmd=Activate` y el `agentId` del agente
-de preview, pero no está verificado cuál es el id en este entorno: las páginas traían
-`cq:lastReplicationAction_preview`, lo que confirma que el agente existe, pero no su nombre.
-Conviene comprobarlo en `/etc/replication/agents.author` antes de automatizarlo.
+**Por API está resuelto** (antes figuraba aquí como pendiente). Los `agentId` son literalmente
+`preview` y `publish`; listar `/etc/replication/agents.author` da 403, así que no se descubren
+por ahí, pero funcionan:
+
+```
+POST /bin/replicate.json
+  cmd=Activate&agentId=preview&path=/content/pre-devportal/inicio
+  -> {"status.message":"Replication started for …","status.code":200}
+```
+
+Automatizado en `../replicar.mjs`:
+
+```
+AEM_TOKEN=... node .eds-pipeline/replicar.mjs --assets --paginas
+AEM_TOKEN=... node .eds-pipeline/replicar.mjs /content/pre-devportal/inicio
+```
+
+Hace falta **también tras cambiar un binario del DAM**, y no basta con replicar el asset: EDS
+resuelve las referencias del DAM a `./media_<hash>` al generar el HTML y ese hash sale del
+binario, así que hasta que no se replican las páginas siguen apuntando al hash anterior.
 
 ## Aviso sobre `value` en pie-chart
 

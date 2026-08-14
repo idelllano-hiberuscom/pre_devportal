@@ -7,7 +7,7 @@
  */
 
 .code-block {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-4);
   border-radius: var(--radius-card);
   background-color: var(--surface-subtle);
   box-shadow: var(--shadow-card);
@@ -24,8 +24,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 24px;
+  gap: var(--space-2);
+  padding: 14px var(--space-3);
   background-color: var(--brand-primary);
   color: var(--background-color);
 }
@@ -36,8 +36,8 @@
   margin: 0;
   color: var(--background-color);
   font-size: var(--body-font-size-xs);
-  font-weight: 500;
-  letter-spacing: 0.25px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-tight);
   line-height: var(--body-line-height);
 }
 
@@ -78,7 +78,7 @@
 }
 
 .code-block .code-block-body {
-  padding: 16px 24px 24px;
+  padding: var(--space-2) var(--space-3) var(--space-3);
 }
 
 .code-block .code-block-pre {
@@ -98,7 +98,7 @@
   color: var(--text-color);
   font-family: SFMono-Regular, consolas, "Liberation Mono", menlo, monospace;
   font-size: var(--body-font-size-xs);
-  line-height: 24px;
+  line-height: var(--body-line-height);
 }
 
 .code-block .code-block-lines li {
@@ -136,7 +136,7 @@
 
 .code-block .code-token-keyword {
   color: var(--brand-primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .code-block .code-token-tag {

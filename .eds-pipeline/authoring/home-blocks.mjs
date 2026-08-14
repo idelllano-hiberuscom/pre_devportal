@@ -53,7 +53,7 @@ const CARACTERISTICAS = [
     'Adapta la experiencia de usuario en base a tus necesidades. Permite a tus clientes seleccionar distintos métodos de pago: tarjeta, bizum, Apple Pay, Google Pay, etc ...'],
   ['icon-plug.png', 'enchufe', 'Integración fácil',
     'Integración sencilla y rápida. Múltiples opciones de integración, adaptadas a tu comercio: Hosted Checkout, plugin, API, etc ...'],
-  ['icon-ruler.png', 'regla', 'Monitor de fraude',
+  ['icon-monitor.png', 'monitor', 'Monitor de fraude',
     'Dispón de una herramienta especializada para prevenir el fraude en la que podrás establecer reglas para evitar compras fraudulentas y permitirá minimizar la fricción en el proceso del pago para aquellas compras de clientes habituales.'],
   ['icon-shield.png', 'escudo', 'Seguridad',
     'Autenticación de tu cliente 3D Secure. Se utilizan los protocolos de autenticación de cada medio de pago seleccionado: 3DS en Tarjetas, Autenticación Bizum, etc...'],
@@ -96,6 +96,13 @@ const FOOTER_ENLACES = [
 
 // Los sellos del pie usan las variantes en blanco: sobre el navy del pie, las de color
 // de marca quedan invisibles.
+// Redes sociales del pie, bajo el logotipo, como en el portal.
+const REDES = [
+  ['Facebook', 'https://www.facebook.com/pages/CECABANK/307199180207838/'],
+  ['X', 'https://www.x.com/Cecabank_es'],
+  ['LinkedIn', 'https://www.linkedin.com/company/ceca/'],
+];
+
 const CERTIFICACIONES = [
   ['cert-visa.png', 'Visa'],
   ['cert-mastercard.png', 'Mastercard'],
@@ -239,9 +246,11 @@ const footerSection = () => {
   CERTIFICACIONES.forEach(([file, alt], i) => {
     sellos[`image_cert_${i}`] = imageNode(file, alt);
   });
+  const redesHtml = `<p>${REDES.map(([n, href]) => `<a href="${href}">${n}</a>`).join(' ')}</p>`;
   return node({
     ...SECTION,
     image: imageNode('logo-cecabank.png', 'Cecabank'),
+    text_redes: textNode(redesHtml),
     text: textNode(gruposHtml),
     text_cert: textNode('<h3>Certificaciones de marcas</h3>'),
     ...sellos,

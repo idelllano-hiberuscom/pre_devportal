@@ -7,6 +7,23 @@
   width: 100%;
 }
 
+/*
+ * Variante divided: dos columnas separadas por una línea vertical teal. En el portal es
+ * `two-column-feature-list` (/integraciones/hosted-checkout, "Entornos y endpoints"): cada
+ * columna lleva su titular y debajo una serie de iconos con su texto.
+ *
+ * No hace falta un bloque nuevo: dentro de una columna sí se renderiza el contenido por
+ * defecto (titulares, imágenes y párrafos), a diferencia de los bloques, que no anidan.
+ *
+ * Los iconos se declaran antes que `.columns-img-col img` para no invertir especificidades.
+ */
+.columns.divided img {
+  width: auto;
+  max-width: 100%;
+  height: 40px;
+  object-fit: contain;
+}
+
 .columns > div > div {
   order: 1;
 }
@@ -19,15 +36,54 @@
   display: block;
 }
 
+.columns.divided :is(h2, h3) {
+  margin: 0 0 var(--space-3);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: normal;
+}
+
+.columns.divided p {
+  margin: 0 0 var(--space-4);
+  color: var(--text-secondary);
+  font-size: var(--body-font-size-m);
+  line-height: var(--paragraph-line-height);
+}
+
+/* El párrafo que solo envuelve el icono no arrastra interlineado ni separación de texto. */
+.columns.divided p:has(picture) {
+  margin-bottom: var(--space-1);
+  line-height: 0;
+}
+
 @media (width >= 900px) {
   .columns > div {
     align-items: center;
     flex-direction: unset;
-    gap: 24px;
+    gap: var(--space-3);
   }
 
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+
+  .columns.divided :is(h2, h3) {
+    font-size: var(--heading-font-size-xl);
+    line-height: var(--line-height-display);
+  }
+
+  .columns.divided > div {
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .columns.divided > div > div + div {
+    padding-left: var(--space-6);
+  }
+
+  .columns.divided > div > div:not(:last-child) {
+    border-right: 1px solid var(--brand-accent);
+    padding-right: var(--space-6);
   }
 }

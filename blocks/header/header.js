@@ -1,9 +1,68 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { rootPath } from '../../scripts/scripts.js';
+import {
+  rootPath, currentLang, LANGS, LANG_DEFAULT,
+} from '../../scripts/scripts.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
+
+const NOMBRE_IDIOMA = { es: 'Español', en: 'English', gl: 'Galego' };
+
+/**
+ * Convierte la etiqueta de idioma del nav en un conmutador real.
+ *
+ * Tiene que vivir aquí y no en el contenido porque depende de la página actual: cada
+ * enlace apunta a *esta misma* página en otro idioma. El fragmento de nav es estático y
+ * por idioma, así que no puede saberlo.
+ *
+ * En el portal de origen esto es i18n de cliente y al recargar declara el idioma
+ * equivocado. Aquí son páginas reales: el enlace es un `<a>` normal, indexable y que
+ * funciona con el JavaScript desactivado.
+ */
+function decorarSelectorDeIdioma(tools) {
+  if (!tools) return;
+
+  const actual = currentLang();
+  const todos = [LANG_DEFAULT, ...LANGS];
+
+  // La ruta sin su prefijo de idioma: es la que se reutiliza para los demás.
+  const rxPrefijo = new RegExp(`^/(?:${LANGS.join('|')})(?=/|$)`);
+  const sinPrefijo = window.location.pathname.replace(rxPrefijo, '') || '/';
+
+  const lista = document.createElement('ul');
+  lista.className = 'nav-lang';
+  todos.forEach((lang) => {
+    const item = document.createElement('li');
+    const destino = lang === LANG_DEFAULT ? sinPrefijo : `/${lang}${sinPrefijo}`;
+    if (lang === actual) {
+      item.setAttribute('aria-current', 'true');
+      item.textContent = lang.toUpperCase();
+    } else {
+      const enlace = document.createElement('a');
+      enlace.href = destino;
+      enlace.hreflang = lang;
+      enlace.textContent = lang.toUpperCase();
+      // El nombre accesible dice el idioma, no dos letras sueltas.
+      enlace.setAttribute('aria-label', NOMBRE_IDIOMA[lang] || lang);
+      item.append(enlace);
+    }
+    lista.append(item);
+  });
+
+  const etiqueta = document.createElement('span');
+  etiqueta.className = 'nav-lang-label';
+  etiqueta.id = 'nav-lang-label';
+  etiqueta.textContent = 'Idioma';
+  lista.setAttribute('aria-labelledby', etiqueta.id);
+
+  // La etiqueta de texto del contenido ("ES") se sustituye: ya la representa la lista.
+  const marcador = [...tools.querySelectorAll('p')]
+    .find((p) => todos.includes(p.textContent.trim().toLowerCase()));
+  if (marcador) marcador.remove();
+
+  tools.prepend(etiqueta, lista);
+}
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
@@ -141,6 +200,8 @@ export default async function decorate(block) {
     const wrapper = brandLink.closest('.button-wrapper, .button-container');
     if (wrapper) wrapper.className = '';
   }
+
+  decorarSelectorDeIdioma(nav.querySelector('.nav-tools'));
 
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {

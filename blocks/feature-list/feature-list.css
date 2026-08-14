@@ -13,7 +13,7 @@
  */
 .section.feature-list-section {
   margin: 0;
-  padding: 96px 0;
+  padding: var(--space-12) 0;
   background-color: var(--brand-primary);
   color: var(--background-color);
   clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%);
@@ -36,7 +36,7 @@
 .feature-list .feature-list-items {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: var(--space-5);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -45,7 +45,7 @@
 .feature-list .feature-list-item {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: var(--space-3);
   align-items: flex-start;
   margin: 0;
 }
@@ -73,18 +73,18 @@
 
 /* El titular de cada item se mide igual que el h2 de sección: 40/60 peso 400. */
 .feature-list .feature-list-item-body :is(h2, h3, h4, h5) {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-1);
   color: var(--background-color);
   font-size: var(--heading-font-size-xl);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   letter-spacing: normal;
   line-height: 1.5;
 }
 
 .feature-list .feature-list-item-body p {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-2);
   color: var(--background-color);
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   line-height: var(--paragraph-line-height);
 }
 
@@ -113,7 +113,7 @@
   }
 
   .feature-list .feature-list-items {
-    gap: 56px;
+    gap: var(--space-7);
   }
 
   .feature-list .feature-list-item {
@@ -125,7 +125,7 @@
   }
 
   .feature-list .feature-list-item-body :is(h2, h3, h4, h5) {
-    line-height: 60px;
+    line-height: var(--line-height-display);
   }
 
   /*
@@ -135,7 +135,7 @@
   .section.feature-list-section-split {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 40px;
+    gap: var(--space-5);
     max-width: none;
     margin-inline: 0;
     padding: 200px max(32px, calc(50vw - 568px));
@@ -149,12 +149,12 @@
 
   .section.feature-list-section-split > .feature-list-intro {
     border-right: 2px solid var(--brand-accent);
-    padding-right: 40px;
+    padding-right: var(--space-5);
   }
 
   .feature-list-intro :is(h1, h2) {
     font-size: var(--heading-font-size-xl);
-    font-weight: 400;
-    line-height: 60px;
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-display);
   }
 }

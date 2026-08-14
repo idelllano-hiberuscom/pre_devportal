@@ -77,7 +77,24 @@ export default function decorate(block) {
   }
 
   [...block.children].forEach((row) => {
-    const [summaryCell, ...contentCells] = [...row.children];
+    /*
+     * AEM no emite fila para un campo vacío, así que con `summary` sin rellenar llega una
+     * sola celda y leerla por posición promovía el cuerpo a titular, dejando el item sin
+     * contenido. El titular es texto plano; el cuerpo es richtext y llega con estructura
+     * (titulares, listas o varios párrafos), que es lo que los distingue.
+     */
+    const cells = [...row.children];
+    const esCuerpo = (cell) => Boolean(cell?.querySelector('h1,h2,h3,h4,h5,h6,ul,ol,table'))
+      || (cell?.children.length || 0) > 1;
+
+    let summaryCell;
+    let contentCells;
+    if (cells.length > 1) {
+      [summaryCell, ...contentCells] = cells;
+    } else {
+      summaryCell = esCuerpo(cells[0]) ? undefined : cells[0];
+      contentCells = summaryCell ? [] : cells.filter(Boolean);
+    }
 
     if (!summaryCell || !summaryCell.textContent.trim()) {
       return;
